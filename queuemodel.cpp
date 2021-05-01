@@ -32,21 +32,20 @@ QVariant QueueModel::data(const QModelIndex &index, int role) const
     return QString(m_songs[index.row()]->getTag(MPD_TAG_TITLE, 0));
 }
 
-void QueueModel::setConnected(bool isConnected) {
-    if (isConnected == m_isConnected) {
+void QueueModel::clear()
+{
+    if (m_songs.empty()) {
         return;
     }
+    beginRemoveRows(QModelIndex(), 0, m_songs.size() - 1);
+    m_songs.clear();
+    endRemoveRows();
+}
+
+void QueueModel::refresh() {
 
     beginResetModel();
-
-    if (isConnected && m_mpd) {
-        m_songs = m_mpd.listQueueMeta();
-        emit mpdError(m_mpd.getError());
-    } else {
-        m_songs.clear();
-    }
-
+    m_songs = m_mpd.listQueueMeta();
     endResetModel();
-
-    m_isConnected = isConnected;
+    emit mpdError(m_mpd.getError());
 }

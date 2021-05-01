@@ -20,7 +20,8 @@ public:
     int rowCount(const QModelIndex & = QModelIndex()) const override;
     QVariant data(const QModelIndex &, int role = Qt::DisplayRole) const override;
 public slots:
-    void setConnected(bool);
+    void clear();
+    void refresh();
 signals:
     void mpdError(int);
 
