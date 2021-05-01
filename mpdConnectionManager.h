@@ -11,6 +11,7 @@ class MPDConnectionManager: public QObject
     Q_OBJECT
 public:
     MPDConnectionManager(mpd::Connection &, QObject * = nullptr);
+public slots:
     void connectToMPD();
     void setError(int);
 signals:
