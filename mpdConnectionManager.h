@@ -2,18 +2,21 @@
 #define MPDCONNECTIONMANAGER_H
 
 #include <QObject>
+
 #include "connection.h"
 
 class MPDConnectionManager: public QObject
 {
-public:
     Q_OBJECT
-    MPDConnectionManager(mpd::Connection &);
-    void connectToMPD(const char *, unsigned, unsigned);
+public:
+    MPDConnectionManager(mpd::Connection &, QObject * = nullptr);
+    void connectToMPD();
+    void setError(int);
 signals:
     void errorMessage(const QString &);
 private:
-        mpd::Connection &m_mpdConnection;
+    mpd::Connection &m_mpd;
+    int m_mpdError{0};
 };
 
 #endif

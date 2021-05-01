@@ -7,9 +7,9 @@
 
 namespace mpd {
 class Connection;
-class Song;
 } // namespace mpd
 
+#include "song.h"
 
 class QueueModel : public QAbstractListModel
 {
