@@ -34,5 +34,6 @@ void MPDConnectionManager::setError(int mpdError) {
         mpd::Connection disconnected;
         m_mpd = std::move(disconnected);
         emit connectionState(MPDConnection::State::Disconnected);
+        m_mpdError = MPD_ERROR_SUCCESS;
     }
 }
