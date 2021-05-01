@@ -41,6 +41,7 @@ void QueueModel::setConnected(bool isConnected) {
 
     if (isConnected && m_mpd) {
         m_songs = m_mpd.listQueueMeta();
+        emit mpdError(m_mpd.getError());
     } else {
         m_songs.clear();
     }

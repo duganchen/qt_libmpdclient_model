@@ -13,12 +13,16 @@ class Song;
 
 class QueueModel : public QAbstractListModel
 {
+Q_OBJECT
+
 public:
     QueueModel(mpd::Connection &, QObject * = nullptr);
     int rowCount(const QModelIndex & = QModelIndex()) const override;
     QVariant data(const QModelIndex &, int role = Qt::DisplayRole) const override;
 public slots:
     void setConnected(bool);
+signals:
+    void mpdError(int);
 
 private:
     mpd::Connection &m_mpd;
