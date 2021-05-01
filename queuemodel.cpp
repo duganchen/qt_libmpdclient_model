@@ -7,9 +7,6 @@ QueueModel::QueueModel(mpd::Connection &mpd, QObject *parent)
     : QAbstractListModel(parent)
     , m_mpd(mpd)
 {
-    if (m_mpd) {
-        m_songs = m_mpd.listQueueMeta();
-    }
 }
 
 int QueueModel::rowCount(const QModelIndex &parent) const
@@ -33,4 +30,22 @@ QVariant QueueModel::data(const QModelIndex &index, int role) const
     }
 
     return QString(m_songs[index.row()]->getTag(MPD_TAG_TITLE, 0));
+}
+
+void QueueModel::setConnected(bool isConnected) {
+    if (isConnected == m_isConnected) {
+        return;
+    }
+
+    beginResetModel();
+
+    if (isConnected && m_mpd) {
+        m_songs = m_mpd.listQueueMeta();
+    } else {
+        m_songs.clear();
+    }
+
+    endResetModel();
+
+    m_isConnected = isConnected;
 }

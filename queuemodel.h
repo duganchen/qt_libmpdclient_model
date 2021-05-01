@@ -17,10 +17,13 @@ public:
     QueueModel(mpd::Connection &, QObject * = nullptr);
     int rowCount(const QModelIndex & = QModelIndex()) const override;
     QVariant data(const QModelIndex &, int role = Qt::DisplayRole) const override;
+public slots:
+    void setConnected(bool);
 
 private:
     mpd::Connection &m_mpd;
     std::vector<std::unique_ptr<mpd::Song>> m_songs;
+    bool m_isConnected{false};
 };
 
 #endif
