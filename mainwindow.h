@@ -20,7 +20,7 @@ public slots:
     void setErrorMessage(const QString &);
 signals:
     void connectClicked();
-
+    void disconnectClicked();
 private:
     QProgressBar *m_progressBar{};
     QPushButton *m_connectButton{};

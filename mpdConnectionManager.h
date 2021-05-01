@@ -14,6 +14,7 @@ public:
     MPDConnectionManager(mpd::Connection &, QObject * = nullptr);
 public slots:
     void connectToMPD();
+    void disconnectFromMPD();
     void setError(int);
 signals:
     void errorMessage(const QString &);

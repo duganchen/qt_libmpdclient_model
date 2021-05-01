@@ -18,6 +18,14 @@ void MPDConnectionManager::connectToMPD() {
     }
 }
 
+void MPDConnectionManager::disconnectFromMPD() {
+    mpd::Connection disconnected;
+    m_mpd = std::move(disconnected);
+    emit connectionState(MPDConnection::State::Disconnected);
+    setError(MPD_ERROR_SUCCESS);
+}
+
+
 void MPDConnectionManager::setError(int mpdError) {
     if (m_mpdError == mpdError) {
         return;
@@ -29,7 +37,9 @@ void MPDConnectionManager::setError(int mpdError) {
 
     m_mpdError = mpdError;
 
-    if (m_mpdError != MPD_ERROR_SUCCESS) {
+    if (m_mpdError == MPD_ERROR_SUCCESS) {
+        emit errorMessage("");
+    } else {
         emit errorMessage(m_mpd.getErrorMessage());
         mpd::Connection disconnected;
         m_mpd = std::move(disconnected);
