@@ -8,13 +8,13 @@
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     mpd::Connection connection;
-    auto mpdConnectionManager = new MPDConnectionManager(connection);
+    MPDConnectionManager mpdConnectionManager(connection);
     auto model = new QueueModel(connection);
-    QObject::connect(model, &QueueModel::mpdError, mpdConnectionManager, &MPDConnectionManager::setError);
+    QObject::connect(model, &QueueModel::mpdError, &mpdConnectionManager, &MPDConnectionManager::setError);
     MainWindow window(model);
-    QObject::connect(mpdConnectionManager, &MPDConnectionManager::errorMessage, &window, &MainWindow::setErrorMessage);
-    QObject::connect(mpdConnectionManager, &MPDConnectionManager::connectionState, &window, &MainWindow::setConnectionState);
-    QObject::connect(&window, &MainWindow::connectClicked, mpdConnectionManager, &MPDConnectionManager::connectToMPD);
+    QObject::connect(&mpdConnectionManager, &MPDConnectionManager::errorMessage, &window, &MainWindow::setErrorMessage);
+    QObject::connect(&mpdConnectionManager, &MPDConnectionManager::connectionState, &window, &MainWindow::setConnectionState);
+    QObject::connect(&window, &MainWindow::connectClicked, &mpdConnectionManager, &MPDConnectionManager::connectToMPD);
     window.show();
     return app.exec();
 }
