@@ -1,6 +1,6 @@
 #include "queuemodel.h"
 
-#include "connection.h"
+#include "mpdclient/connection.h"
 #include <mpd/client.h>
 
 QueueModel::QueueModel(mpd::Connection &mpd, QObject *parent)

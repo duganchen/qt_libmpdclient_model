@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "connection.h"
+#include "mpdclient/connection.h"
 #include "mpd/client.h"
 
 class MPDConnectionManager: public QObject
