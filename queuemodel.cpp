@@ -43,6 +43,9 @@ void QueueModel::clear()
 }
 
 void QueueModel::refresh() {
+    if (!m_mpd) {
+        return;
+    }
 
     beginResetModel();
     m_songs = m_mpd.listQueueMeta();
