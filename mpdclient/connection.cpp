@@ -2,7 +2,8 @@
 
 mpd::Connection::Connection(mpd_connection *connection)
     : m_connection{connection}
-{}
+{
+}
 
 mpd::Connection::operator bool()
 {
