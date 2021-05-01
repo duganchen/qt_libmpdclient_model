@@ -18,6 +18,8 @@ public:
 public slots:
     void setConnectionState(MPDConnection::State);
     void setErrorMessage(const QString &);
+signals:
+    void connectClicked();
 
 private:
     QProgressBar *m_progressBar{};

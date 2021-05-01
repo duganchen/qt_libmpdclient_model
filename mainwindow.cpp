@@ -12,6 +12,7 @@ MainWindow::MainWindow(QueueModel *model, QWidget *parent, Qt::WindowFlags windo
 {
     auto layout = new QVBoxLayout();
     m_connectButton = new QPushButton("&Connect to MPD");
+    connect(m_connectButton, &QPushButton::clicked, [=]() { emit connectClicked(); });
     layout->addWidget(m_connectButton);
     m_progressBar = new QProgressBar();
     layout->addWidget(m_progressBar);

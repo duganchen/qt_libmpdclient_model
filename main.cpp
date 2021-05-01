@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
     MainWindow window(model);
     QObject::connect(mpdConnectionManager, &MPDConnectionManager::errorMessage, &window, &MainWindow::setErrorMessage);
     QObject::connect(mpdConnectionManager, &MPDConnectionManager::connectionState, &window, &MainWindow::setConnectionState);
+    QObject::connect(&window, &MainWindow::connectClicked, mpdConnectionManager, &MPDConnectionManager::connectToMPD);
     window.show();
     return app.exec();
 }
