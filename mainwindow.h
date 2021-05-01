@@ -15,8 +15,9 @@ public:
 public slots:
     void setConnectionState(MPDConnection::State);
 private:
-    QProgressBar *m_progressBar;
-    QPushButton *m_connectButton;
+    QProgressBar *m_progressBar{};
+    QPushButton *m_connectButton{};
+    QPushButton *m_refreshButton{};
 };
 
 #endif

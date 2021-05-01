@@ -12,6 +12,9 @@ MainWindow::MainWindow(QAbstractItemModel *model, QWidget *parent, Qt::WindowFla
     layout->addWidget(m_connectButton);
     m_progressBar = new QProgressBar();
     layout->addWidget(m_progressBar);
+    m_refreshButton = new QPushButton("&Refresh MPD Queue");
+    m_refreshButton->setEnabled(false);
+    layout->addWidget(m_refreshButton);
     auto view = new QListView();
     view->setModel(model);
     layout->addWidget(view);
@@ -26,18 +29,21 @@ void MainWindow::setConnectionState(MPDConnection::State state)
         case MPDConnection::State::Disconnected:
             m_connectButton->setText("&Connect to MPD");
             m_connectButton->setEnabled(true);
+            m_refreshButton->setEnabled(false);
             m_progressBar->setMinimum(0);
             m_progressBar->setMaximum(1);
             break;
         case MPDConnection::State::Connecting:
             m_connectButton->setText("&Connect to MPD");
             m_connectButton->setEnabled(false);
+            m_refreshButton->setEnabled(false);
             m_progressBar->setMinimum(0);
             m_progressBar->setMaximum(0);
             break;
         case MPDConnection::State::Connected:
             m_connectButton->setText("Dis&connect from MPD");
-            m_connectButton->setEnabled(true);
+            m_connectButton->setEnabled(false);
+            m_refreshButton->setEnabled(true);
             m_progressBar->setMinimum(0);
             m_progressBar->setMaximum(1);
             break;
