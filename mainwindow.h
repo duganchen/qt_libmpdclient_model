@@ -5,6 +5,7 @@
 #include "connectionstate.h"
 
 class QAbstractItemModel;
+class QLabel;
 class QProgressBar;
 class QPushButton;
 class QueueModel;
@@ -16,10 +17,13 @@ public:
     MainWindow(QueueModel *, QWidget * = nullptr, Qt::WindowFlags = Qt::WindowFlags());
 public slots:
     void setConnectionState(MPDConnection::State);
+    void setErrorMessage(const QString &);
+
 private:
     QProgressBar *m_progressBar{};
     QPushButton *m_connectButton{};
     QPushButton *m_refreshButton{};
+    QLabel *m_statusLabel{};
     MPDConnection::State m_connectionState{MPDConnection::State::Disconnected};
 };
 

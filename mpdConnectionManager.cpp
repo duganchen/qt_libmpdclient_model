@@ -8,9 +8,14 @@ MPDConnectionManager::MPDConnectionManager(mpd::Connection &mpd, QObject *parent
 }
 
 void MPDConnectionManager::connectToMPD() {
+    emit connectionState(MPDConnection::State::Connecting);
     mpd::Connection connection(mpd_connection_new("localhost", 6600, 0));
     m_mpd = std::move(connection);
-    setError(m_mpd.getError());
+    auto error = m_mpd.getError();
+    setError(error);
+    if (MPD_ERROR_SUCCESS == error) {
+        emit connectionState(MPDConnection::State::Connected);
+    }
 }
 
 void MPDConnectionManager::setError(int mpdError) {
@@ -28,5 +33,6 @@ void MPDConnectionManager::setError(int mpdError) {
         emit errorMessage(m_mpd.getErrorMessage());
         mpd::Connection disconnected;
         m_mpd = std::move(disconnected);
+        emit connectionState(MPDConnection::State::Disconnected);
     }
 }

@@ -5,6 +5,7 @@
 
 #include "mpdclient/connection.h"
 #include "mpd/client.h"
+#include "connectionstate.h"
 
 class MPDConnectionManager: public QObject
 {
@@ -16,6 +17,8 @@ public slots:
     void setError(int);
 signals:
     void errorMessage(const QString &);
+    void connectionState(MPDConnection::State);
+
 private:
     mpd::Connection &m_mpd;
     int m_mpdError{MPD_ERROR_SUCCESS};

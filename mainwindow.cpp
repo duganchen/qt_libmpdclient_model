@@ -1,8 +1,10 @@
 #include "mainwindow.h"
 #include "queuemodel.h"
+#include <QLabel>
 #include <QListView>
 #include <QProgressBar>
 #include <QPushButton>
+#include <QStatusBar>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -23,6 +25,14 @@ MainWindow::MainWindow(QueueModel *model, QWidget *parent, Qt::WindowFlags windo
     auto widget = new QWidget();
     widget->setLayout(layout);
     setCentralWidget(widget);
+
+    m_statusLabel = new QLabel();
+    statusBar()->addPermanentWidget(m_statusLabel);
+}
+
+void MainWindow::setErrorMessage(const QString &message)
+{
+    m_statusLabel->setText(message);
 }
 
 void MainWindow::setConnectionState(MPDConnection::State state)
