@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "connection.h"
+#include "mpd/client.h"
 
 class MPDConnectionManager: public QObject
 {
@@ -16,7 +17,7 @@ signals:
     void errorMessage(const QString &);
 private:
     mpd::Connection &m_mpd;
-    int m_mpdError{0};
+    int m_mpdError{MPD_ERROR_SUCCESS};
 };
 
 #endif
