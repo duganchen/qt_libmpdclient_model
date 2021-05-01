@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 #include <QAbstractListModel>
-#include <qabstractitemmodel.h>
 
 namespace mpd {
 class Connection;
