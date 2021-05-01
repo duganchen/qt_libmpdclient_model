@@ -47,21 +47,18 @@ void MainWindow::setConnectionState(MPDConnection::State state)
     switch (m_connectionState) {
         case MPDConnection::State::Disconnected:
             m_connectButton->setText("&Connect to MPD");
-            m_connectButton->setEnabled(true);
             m_refreshButton->setEnabled(false);
             m_progressBar->setMinimum(0);
             m_progressBar->setMaximum(1);
             break;
         case MPDConnection::State::Connecting:
             m_connectButton->setText("&Connect to MPD");
-            m_connectButton->setEnabled(false);
             m_refreshButton->setEnabled(false);
             m_progressBar->setMinimum(0);
             m_progressBar->setMaximum(0);
             break;
         case MPDConnection::State::Connected:
             m_connectButton->setText("Dis&connect from MPD");
-            m_connectButton->setEnabled(false);
             m_refreshButton->setEnabled(true);
             m_progressBar->setMinimum(0);
             m_progressBar->setMaximum(1);
