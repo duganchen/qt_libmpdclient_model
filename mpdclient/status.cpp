@@ -19,6 +19,7 @@ unsigned mpd::Status::get_queue_length() {
 }
 
 
+
 mpd::Status::Status(mpd::Status &&other)
     : m_status(other.m_status)
 {

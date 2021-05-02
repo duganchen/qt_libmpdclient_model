@@ -10,6 +10,11 @@
 
 namespace mpd {
 
+struct plchangeposid {
+    unsigned position;
+    unsigned id;
+};
+
 class Connection
 {
 public:
@@ -25,7 +30,8 @@ public:
     virtual bool send_idle();
     virtual mpd_idle recv_idle(bool);
     virtual std::unique_ptr<Status> status();
-    virtual std::vector<std::pair<unsigned, unsigned>> plchangesposid(unsigned);
+    virtual std::vector<plchangeposid> plchangesposid(unsigned);
+    std::unique_ptr<mpd::Song> run_get_queue_song_id(unsigned);
 
     Connection(const Connection &) = delete;
     Connection &operator=(const Connection &) = delete;

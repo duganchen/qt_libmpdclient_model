@@ -5,10 +5,7 @@
 #include <vector>
 #include <QAbstractListModel>
 
-namespace mpd {
-class Connection;
-} // namespace mpd
-
+#include "mpdclient/connection.h"
 #include "mpdclient/song.h"
 
 class QueueModel : public QAbstractListModel
@@ -22,6 +19,7 @@ public:
 public slots:
     void clear();
     void refresh();
+    void onPlChangesPosId(const std::vector<mpd::plchangeposid> &);
 signals:
     void mpdClosed();
 

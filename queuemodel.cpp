@@ -54,3 +54,8 @@ void QueueModel::refresh() {
         emit mpdClosed();
     }
 }
+
+void QueueModel::onPlChangesPosId(const std::vector<mpd::plchangeposid> &changes) {
+    Q_UNUSED(changes)
+    // This will handle notifications of new queue versions.
+}

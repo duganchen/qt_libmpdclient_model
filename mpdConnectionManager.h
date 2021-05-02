@@ -5,10 +5,8 @@
 
 #include "mpd/client.h"
 #include "connectionstate.h"
+#include "mpdclient/connection.h"
 
-namespace mpd {
-class Connection;
-}
 
 class QSocketNotifier;
 
@@ -24,7 +22,7 @@ public slots:
 signals:
     void errorMessage(const QString &);
     void connectionState(MPDConnection::State);
-    void idleQueue();
+    void plchangesposid(const std::vector<mpd::plchangeposid> &);
 
 private:
     mpd::Connection &m_mpd;

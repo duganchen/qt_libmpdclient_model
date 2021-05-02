@@ -54,6 +54,7 @@ int mpd::Connection::get_fd() {
 }
 
 bool mpd::Connection::send_idle() {
+
     return mpd_send_idle(m_connection);
 }
 
@@ -65,15 +66,15 @@ std::unique_ptr<mpd::Status> mpd::Connection::status() {
     return std::make_unique<mpd::Status>(mpd_run_status(m_connection));
 }
 
-std::vector<std::pair<unsigned, unsigned>> mpd::Connection::plchangesposid(unsigned version) {
-    std::vector<std::pair<unsigned, unsigned>> changes;
+std::vector<mpd::plchangeposid> mpd::Connection::plchangesposid(unsigned version) {
+    std::vector<mpd::plchangeposid> changes;
     if (mpd_send_queue_changes_brief(m_connection, version)) {
-        unsigned position{};
-        unsigned id{};
-        while (mpd_recv_queue_change_brief(m_connection, &position, &id)) {
-            changes.push_back(std::make_pair(position, id));
+        struct plchangeposid change;
+        while (mpd_recv_queue_change_brief(m_connection, &change.position, &change.id)) {
+            changes.push_back(change);
         }
     }
+
     return changes;
 }
 
