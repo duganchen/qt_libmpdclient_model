@@ -3,15 +3,14 @@
 
 #include <QObject>
 
-#include "mpd/client.h"
 #include "connectionstate.h"
+#include "mpd/client.h"
 #include "mpdclient/connection.h"
 #include "mpdclient/status.h"
 
-
 class QSocketNotifier;
 
-class MPDConnectionManager: public QObject
+class MPDConnectionManager : public QObject
 {
     Q_OBJECT
 public:
@@ -23,7 +22,7 @@ public slots:
 signals:
     void errorMessage(const QString &);
     void connectionState(MPDConnection::State);
-    void idleQueue(std::unique_ptr<mpd::Status> &);
+    void idleQueue();
 
 private:
     mpd::Connection &m_mpd;

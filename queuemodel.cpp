@@ -65,7 +65,7 @@ void QueueModel::refresh()
     endResetModel();
 }
 
-void QueueModel::onIdleQueue(std::unique_ptr<mpd::Status> &status)
+void QueueModel::onIdleQueue()
 {
     if (!m_mpd) {
         return;
@@ -74,6 +74,17 @@ void QueueModel::onIdleQueue(std::unique_ptr<mpd::Status> &status)
     if (m_queueVersion == UINT_MAX) {
         return;
     }
+
+    auto status = m_mpd.status();
+    switch (m_mpd.get_error()) {
+    case MPD_ERROR_SUCCESS:
+        break;
+    case MPD_ERROR_CLOSED:
+        emit mpdClosed();
+        return;
+    default:
+        emit m_mpd.get_error_message();
+    };
 
     unsigned queueVersion = status->get_queue_version();
 

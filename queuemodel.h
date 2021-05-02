@@ -11,7 +11,7 @@
 
 class QueueModel : public QAbstractListModel
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     QueueModel(mpd::Connection &, QObject * = nullptr);
@@ -20,7 +20,7 @@ public:
 public slots:
     void clear();
     void refresh();
-    void onIdleQueue(std::unique_ptr<mpd::Status> &);
+    void onIdleQueue();
 signals:
     void mpdClosed();
     void errorMessage(const QString &);
