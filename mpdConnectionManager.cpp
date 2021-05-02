@@ -1,5 +1,6 @@
 #include "mpdConnectionManager.h"
 #include "mpdclient/connection.h"
+#include <QSocketNotifier>
 
 MPDConnectionManager::MPDConnectionManager(mpd::Connection &mpd, QObject *parent)
     : QObject(parent)
@@ -15,8 +16,8 @@ void MPDConnectionManager::connectToMPD() {
     mpd::Connection connection(mpd_connection_new("localhost", 6600, 0));
     
     m_mpd = std::move(connection);
-    auto error = m_mpd.getError();
-    if (MPD_ERROR_SUCCESS == error) {
+    if (m_mpd.getError() == MPD_ERROR_SUCCESS) {
+        m_socketNotifier = new QSocketNotifier(m_mpd.getFD(), QSocketNotifier::Read, this);
         emit connectionState(MPDConnection::State::Connected);
     } else {
         onMPDClosed();
@@ -37,6 +38,11 @@ void MPDConnectionManager::onMPDClosed() {
 
 void MPDConnectionManager::disconnectFromMPD()
 {
+    if (m_socketNotifier) {
+        m_socketNotifier->deleteLater();
+        m_socketNotifier = nullptr;
+    }
+
     mpd::Connection disconnected;
     m_mpd = std::move(disconnected);
     emit connectionState(MPDConnection::State::Disconnected);
