@@ -40,6 +40,8 @@ void QueueModel::clear()
     beginRemoveRows(QModelIndex(), 0, m_songs.size() - 1);
     m_songs.clear();
     endRemoveRows();
+
+    m_queueVersion = UINT_MAX;
 }
 
 void QueueModel::refresh() {
@@ -55,7 +57,6 @@ void QueueModel::refresh() {
     }
 }
 
-void QueueModel::onPlChangesPosId(const std::vector<mpd::plchangeposid> &changes) {
-    Q_UNUSED(changes)
-    // This will handle notifications of new queue versions.
+void QueueModel::onQueueVersion(unsigned queueVersion) {
+    Q_UNUSED(queueVersion);
 }

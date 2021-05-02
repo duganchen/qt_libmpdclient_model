@@ -19,7 +19,7 @@ public:
 public slots:
     void clear();
     void refresh();
-    void onPlChangesPosId(const std::vector<mpd::plchangeposid> &);
+    void onQueueVersion(unsigned);
 signals:
     void mpdClosed();
 
@@ -27,6 +27,7 @@ private:
     mpd::Connection &m_mpd;
     std::vector<std::unique_ptr<mpd::Song>> m_songs;
     bool m_isConnected{false};
+    unsigned m_queueVersion{UINT_MAX};
 };
 
 #endif

@@ -22,7 +22,7 @@ public slots:
 signals:
     void errorMessage(const QString &);
     void connectionState(MPDConnection::State);
-    void plchangesposid(const std::vector<mpd::plchangeposid> &);
+    void queueVersion(unsigned);
 
 private:
     mpd::Connection &m_mpd;
