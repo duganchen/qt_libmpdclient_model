@@ -8,7 +8,7 @@ namespace mpd {
 class Song
 {
 public:
-    virtual const char *getTag(mpd_tag_type, unsigned);
+    virtual const char *get_tag(mpd_tag_type, unsigned);
 
     operator bool();
     Song(mpd_song * = nullptr);

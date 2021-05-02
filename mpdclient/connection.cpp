@@ -10,17 +10,17 @@ mpd::Connection::operator bool()
     return bool(m_connection);
 }
 
-mpd_error mpd::Connection::getError()
+mpd_error mpd::Connection::get_error()
 {
     return mpd_connection_get_error(m_connection);
 };
 
-const char *mpd::Connection::getErrorMessage()
+const char *mpd::Connection::get_error_message()
 {
     return mpd_connection_get_error_message(m_connection);
 }
 
-const unsigned *mpd::Connection::getServerVersion()
+const unsigned *mpd::Connection::get_server_version()
 {
     return mpd_connection_get_server_version(m_connection);
 }
@@ -30,7 +30,7 @@ bool mpd::Connection::clearError()
     return mpd_connection_clear_error(m_connection);
 }
 
-std::vector<std::unique_ptr<mpd::Song>> mpd::Connection::listQueueMeta()
+std::vector<std::unique_ptr<mpd::Song>> mpd::Connection::list_queue_meta()
 {
     // Precondition: m_connection is not null
 
@@ -49,23 +49,23 @@ std::vector<std::unique_ptr<mpd::Song>> mpd::Connection::listQueueMeta()
     // empty if there was a problem.
 }
 
-int mpd::Connection::getFD() {
+int mpd::Connection::get_fd() {
     return mpd_connection_get_fd(m_connection);
 }
 
-bool mpd::Connection::sendIdle() {
+bool mpd::Connection::send_idle() {
     return mpd_send_idle(m_connection);
 }
 
-mpd_idle mpd::Connection::recvIdle(bool disable_timeout) {
+mpd_idle mpd::Connection::recv_idle(bool disable_timeout) {
     return mpd_recv_idle(m_connection, disable_timeout);
 }
 
-std::unique_ptr<mpd::Status> mpd::Connection::runStatus() {
+std::unique_ptr<mpd::Status> mpd::Connection::status() {
     return std::make_unique<mpd::Status>(mpd_run_status(m_connection));
 }
 
-std::vector<std::pair<unsigned, unsigned>> mpd::Connection::runPlChangesPosId(unsigned version) {
+std::vector<std::pair<unsigned, unsigned>> mpd::Connection::plchangesposid(unsigned version) {
     std::vector<std::pair<unsigned, unsigned>> changes;
     if (mpd_send_queue_changes_brief(m_connection, version)) {
         unsigned position{};

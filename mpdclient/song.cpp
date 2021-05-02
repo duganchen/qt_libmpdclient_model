@@ -1,6 +1,6 @@
 #include "song.h"
 
-const char *mpd::Song::getTag(mpd_tag_type type, unsigned idx)
+const char *mpd::Song::get_tag(mpd_tag_type type, unsigned idx)
 {
     return mpd_song_get_tag(m_song, type, idx);
 }

@@ -14,18 +14,18 @@ class Connection
 {
 public:
     Connection(mpd_connection * = nullptr);
-
     virtual explicit operator bool();
-    virtual mpd_error getError();
-    virtual const char *getErrorMessage();
-    virtual const unsigned *getServerVersion();
+
+    virtual mpd_error get_error();
+    virtual const char *get_error_message();
+    virtual const unsigned *get_server_version();
     virtual bool clearError();
-    virtual std::vector<std::unique_ptr<Song>> listQueueMeta();
-    virtual int getFD();
-    virtual bool sendIdle();
-    virtual mpd_idle recvIdle(bool);
-    virtual std::unique_ptr<Status> runStatus();
-    virtual std::vector<std::pair<unsigned, unsigned>> runPlChangesPosId(unsigned);
+    virtual std::vector<std::unique_ptr<Song>> list_queue_meta();
+    virtual int get_fd();
+    virtual bool send_idle();
+    virtual mpd_idle recv_idle(bool);
+    virtual std::unique_ptr<Status> status();
+    virtual std::vector<std::pair<unsigned, unsigned>> plchangesposid(unsigned);
 
     Connection(const Connection &) = delete;
     Connection &operator=(const Connection &) = delete;

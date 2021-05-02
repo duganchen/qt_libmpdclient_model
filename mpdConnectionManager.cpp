@@ -16,8 +16,8 @@ void MPDConnectionManager::connectToMPD() {
     mpd::Connection connection(mpd_connection_new("localhost", 6600, 0));
     
     m_mpd = std::move(connection);
-    if (m_mpd.getError() == MPD_ERROR_SUCCESS) {
-        m_socketNotifier = new QSocketNotifier(m_mpd.getFD(), QSocketNotifier::Read, this);
+    if (m_mpd.get_error() == MPD_ERROR_SUCCESS) {
+        m_socketNotifier = new QSocketNotifier(m_mpd.get_fd(), QSocketNotifier::Read, this);
         emit connectionState(MPDConnection::State::Connected);
     } else {
         onMPDClosed();
@@ -31,7 +31,7 @@ void MPDConnectionManager::onMPDClosed() {
     // * connection failures
 
     // Precondition: MPD's error state isn't MPD_ERROR_SUCCESS
-    emit errorMessage(m_mpd.getErrorMessage());
+    emit errorMessage(m_mpd.get_error_message());
     
     disconnectFromMPD();
 }

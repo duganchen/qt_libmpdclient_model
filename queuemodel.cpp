@@ -29,7 +29,7 @@ QVariant QueueModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    return QString(m_songs[index.row()]->getTag(MPD_TAG_TITLE, 0));
+    return QString(m_songs[index.row()]->get_tag(MPD_TAG_TITLE, 0));
 }
 
 void QueueModel::clear()
@@ -48,9 +48,9 @@ void QueueModel::refresh() {
     }
 
     beginResetModel();
-    m_songs = m_mpd.listQueueMeta();
+    m_songs = m_mpd.list_queue_meta();
     endResetModel();
-    if (m_mpd.getError() == MPD_ERROR_CLOSED) {
+    if (m_mpd.get_error() == MPD_ERROR_CLOSED) {
         emit mpdClosed();
     }
 }
