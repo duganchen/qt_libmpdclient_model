@@ -20,6 +20,8 @@ public:
     virtual bool clearError();
     virtual std::vector<std::unique_ptr<Song>> listQueueMeta();
     virtual int getFD();
+    virtual bool sendIdle();
+    virtual mpd_idle recvIdle(bool);
 
     Connection(const Connection &) = delete;
     Connection &operator=(const Connection &) = delete;

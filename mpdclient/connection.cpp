@@ -53,6 +53,14 @@ int mpd::Connection::getFD() {
     return mpd_connection_get_fd(m_connection);
 }
 
+bool mpd::Connection::sendIdle() {
+    return mpd_send_idle(m_connection);
+}
+
+mpd_idle mpd::Connection::recvIdle(bool disable_timeout) {
+    return mpd_recv_idle(m_connection, disable_timeout);
+}
+
 mpd::Connection::Connection(mpd::Connection &&other)
     : m_connection(other.m_connection)
 {
