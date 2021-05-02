@@ -57,39 +57,40 @@ void QueueModel::refresh() {
     }
 }
 
-void QueueModel::onQueueVersion(unsigned queueVersion) {
-    if (m_queueVersion == queueVersion) {
-        return;
-    }
-
-    m_queueVersion = queueVersion;
+void QueueModel::onIdleQueue(std::unique_ptr<mpd::Status> &status) {
 
     if (!m_mpd) {
         return;
     }
 
-    auto status = m_mpd.status();
+    if (m_queueVersion == UINT_MAX) {
+        return;
+    }
+
+    unsigned queueVersion = status->get_queue_version();
+
+    if (queueVersion == m_queueVersion) {
+        return;
+    }
+
+    auto changes = m_mpd.plchangesposid(m_queueVersion);
     if (m_mpd.get_error() == MPD_ERROR_CLOSED) {
         emit mpdClosed();
         return;
     }
+    m_queueVersion = queueVersion;
 
-    auto queueLength = status->get_queue_length();
+    unsigned queueLength = status->get_queue_length();
     if (queueLength < m_songs.size()) {
+        beginRemoveRows(QModelIndex(), queueLength, m_songs.size());
         m_songs.resize(queueLength);
-    }
-
-    auto changes = m_mpd.plchangesposid(queueVersion);
-    if (m_mpd.get_error() == MPD_ERROR_CLOSED) {
-        emit mpdClosed();
-        return;
+        endRemoveRows();
     }
 
     // Update the UI one row at a time, as we did in the Python version.
     // Optimize it if you want to...
     for (auto &change: changes) {
         auto song = m_mpd.get_queue_song_id(change.id);
-
         if (!song && m_mpd.get_error() == MPD_ERROR_CLOSED) {
             emit mpdClosed();
             break;

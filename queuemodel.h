@@ -7,6 +7,7 @@
 
 #include "mpdclient/connection.h"
 #include "mpdclient/song.h"
+#include "mpdclient/status.h"
 
 class QueueModel : public QAbstractListModel
 {
@@ -19,7 +20,7 @@ public:
 public slots:
     void clear();
     void refresh();
-    void onQueueVersion(unsigned);
+    void onIdleQueue(std::unique_ptr<mpd::Status> &);
 signals:
     void mpdClosed();
 
