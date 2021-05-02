@@ -49,6 +49,10 @@ std::vector<std::unique_ptr<mpd::Song>> mpd::Connection::listQueueMeta()
     // empty if there was a problem.
 }
 
+int mpd::Connection::getFD() {
+    return mpd_connection_get_fd(m_connection);
+}
+
 mpd::Connection::Connection(mpd::Connection &&other)
     : m_connection(other.m_connection)
 {
@@ -74,3 +78,4 @@ mpd::Connection::~Connection()
         mpd_connection_free(m_connection);
     }
 }
+

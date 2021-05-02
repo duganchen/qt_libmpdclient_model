@@ -19,6 +19,7 @@ public:
     virtual const unsigned *getServerVersion();
     virtual bool clearError();
     virtual std::vector<std::unique_ptr<Song>> listQueueMeta();
+    virtual int getFD();
 
     Connection(const Connection &) = delete;
     Connection &operator=(const Connection &) = delete;
