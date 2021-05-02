@@ -78,6 +78,10 @@ std::vector<mpd::plchangeposid> mpd::Connection::plchangesposid(unsigned version
     return changes;
 }
 
+std::unique_ptr<mpd::Song> mpd::Connection::get_queue_song_id(unsigned id) {
+    return std::make_unique<mpd::Song>(mpd_run_get_queue_song_id(m_connection, id));
+}
+
 mpd::Connection::Connection(mpd::Connection &&other)
     : m_connection(other.m_connection)
 {

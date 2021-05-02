@@ -58,5 +58,45 @@ void QueueModel::refresh() {
 }
 
 void QueueModel::onQueueVersion(unsigned queueVersion) {
-    Q_UNUSED(queueVersion);
+    if (!m_mpd) {
+        return;
+    }
+
+    auto status = m_mpd.status();
+    if (m_mpd.get_error() == MPD_ERROR_CLOSED) {
+        emit mpdClosed();
+        return;
+    }
+
+    auto queueLength = status->get_queue_length();
+    if (queueLength < m_songs.size()) {
+        m_songs.resize(queueLength);
+    }
+
+    auto changes = m_mpd.plchangesposid(queueVersion);
+    if (m_mpd.get_error() == MPD_ERROR_CLOSED) {
+        emit mpdClosed();
+        return;
+    }
+
+    // Update the UI one row at a time, as we did in the Python version.
+    // Optimize it if you want to...
+    for (auto &change: changes) {
+        auto song = m_mpd.get_queue_song_id(change.id);
+
+        if (!song && m_mpd.get_error() == MPD_ERROR_CLOSED) {
+            emit mpdClosed();
+            break;
+        }
+
+        if (change.position < m_songs.size()) {
+            m_songs[change.position] = std::move(song);
+            auto changeIndex = index(change.position, 0);
+            emit dataChanged(changeIndex, changeIndex);
+        } else {
+            beginInsertRows(QModelIndex(), m_songs.size(), m_songs.size());
+            m_songs.push_back(std::move(song));
+            endInsertRows();
+        }
+    }
 }
