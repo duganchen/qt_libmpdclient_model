@@ -24,6 +24,7 @@ public slots:
 signals:
     void errorMessage(const QString &);
     void connectionState(MPDConnection::State);
+    void idleQueue();
 
 private:
     mpd::Connection &m_mpd;
