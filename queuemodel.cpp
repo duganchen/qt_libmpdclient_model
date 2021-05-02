@@ -6,8 +6,7 @@
 QueueModel::QueueModel(mpd::Connection &mpd, QObject *parent)
     : QAbstractListModel(parent)
     , m_mpd(mpd)
-{
-}
+{}
 
 int QueueModel::rowCount(const QModelIndex &parent) const
 {
@@ -44,21 +43,30 @@ void QueueModel::clear()
     m_queueVersion = UINT_MAX;
 }
 
-void QueueModel::refresh() {
+void QueueModel::refresh()
+{
     if (!m_mpd) {
         return;
     }
 
-    beginResetModel();
-    m_songs = m_mpd.list_queue_meta();
-    endResetModel();
-    if (m_mpd.get_error() == MPD_ERROR_CLOSED) {
+    auto songs = m_mpd.list_queue_meta();
+    switch (m_mpd.get_error()) {
+    case MPD_ERROR_SUCCESS:
+        break;
+    case MPD_ERROR_CLOSED:
         emit mpdClosed();
-    }
+        return;
+    default:
+        emit m_mpd.get_error_message();
+    };
+
+    beginResetModel();
+    m_songs = std::move(songs);
+    endResetModel();
 }
 
-void QueueModel::onIdleQueue(std::unique_ptr<mpd::Status> &status) {
-
+void QueueModel::onIdleQueue(std::unique_ptr<mpd::Status> &status)
+{
     if (!m_mpd) {
         return;
     }
@@ -74,10 +82,16 @@ void QueueModel::onIdleQueue(std::unique_ptr<mpd::Status> &status) {
     }
 
     auto changes = m_mpd.plchangesposid(m_queueVersion);
-    if (m_mpd.get_error() == MPD_ERROR_CLOSED) {
+    switch (m_mpd.get_error()) {
+    case MPD_ERROR_SUCCESS:
+        break;
+    case MPD_ERROR_CLOSED:
         emit mpdClosed();
         return;
-    }
+    default:
+        emit m_mpd.get_error_message();
+    };
+
     m_queueVersion = queueVersion;
 
     unsigned queueLength = status->get_queue_length();
@@ -89,10 +103,14 @@ void QueueModel::onIdleQueue(std::unique_ptr<mpd::Status> &status) {
 
     // Update the UI one row at a time, as we did in the Python version.
     // Optimize it if you want to...
-    for (auto &change: changes) {
+    for (auto &change : changes) {
         auto song = m_mpd.get_queue_song_id(change.id);
-        if (!song && m_mpd.get_error() == MPD_ERROR_CLOSED) {
+        mpd_error error = m_mpd.get_error();
+        if (MPD_ERROR_CLOSED == error) {
             emit mpdClosed();
+            break;
+        } else if (MPD_ERROR_SUCCESS != error) {
+            emit errorMessage(m_mpd.get_error_message());
             break;
         }
 
