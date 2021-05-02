@@ -23,6 +23,7 @@ public slots:
     void onIdleQueue(std::unique_ptr<mpd::Status> &);
 signals:
     void mpdClosed();
+    void errorMessage(const QString &);
 
 private:
     mpd::Connection &m_mpd;
