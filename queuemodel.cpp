@@ -58,6 +58,12 @@ void QueueModel::refresh() {
 }
 
 void QueueModel::onQueueVersion(unsigned queueVersion) {
+    if (m_queueVersion == queueVersion) {
+        return;
+    }
+
+    m_queueVersion = queueVersion;
+
     if (!m_mpd) {
         return;
     }
