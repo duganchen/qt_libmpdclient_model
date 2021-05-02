@@ -50,5 +50,7 @@ void QueueModel::refresh() {
     beginResetModel();
     m_songs = m_mpd.listQueueMeta();
     endResetModel();
-    emit mpdError(m_mpd.getError());
+    if (m_mpd.getError() == MPD_ERROR_CLOSED) {
+        emit mpdClosed();
+    }
 }

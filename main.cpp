@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     mpd::Connection connection;
     MPDConnectionManager mpdConnectionManager(connection);
     QueueModel model(connection);
-    QObject::connect(&model, &QueueModel::mpdError, &mpdConnectionManager, &MPDConnectionManager::setError);
+    QObject::connect(&model, &QueueModel::mpdClosed, &mpdConnectionManager, &MPDConnectionManager::onMPDClosed);
     MainWindow window(&model);
     QObject::connect(&mpdConnectionManager, &MPDConnectionManager::errorMessage, &window, &MainWindow::setErrorMessage);
     QObject::connect(&mpdConnectionManager, &MPDConnectionManager::connectionState, &window, &MainWindow::setConnectionState);

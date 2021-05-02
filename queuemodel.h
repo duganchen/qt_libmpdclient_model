@@ -23,7 +23,7 @@ public slots:
     void clear();
     void refresh();
 signals:
-    void mpdError(int);
+    void mpdClosed();
 
 private:
     mpd::Connection &m_mpd;

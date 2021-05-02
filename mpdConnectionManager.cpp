@@ -8,42 +8,36 @@ MPDConnectionManager::MPDConnectionManager(mpd::Connection &mpd, QObject *parent
 }
 
 void MPDConnectionManager::connectToMPD() {
+    emit errorMessage("");
     emit connectionState(MPDConnection::State::Connecting);
+
+    // This is a demo. We harcode the connection values.
     mpd::Connection connection(mpd_connection_new("localhost", 6600, 0));
+    
     m_mpd = std::move(connection);
     auto error = m_mpd.getError();
-    setError(error);
     if (MPD_ERROR_SUCCESS == error) {
         emit connectionState(MPDConnection::State::Connected);
+    } else {
+        onMPDClosed();
     }
 }
 
-void MPDConnectionManager::disconnectFromMPD() {
+void MPDConnectionManager::onMPDClosed() {
+    // Handle:
+    // * MPD_ERROR_CLOSED, which happens if we've lost the connnection due to, say,
+    //   mpd being killed.
+    // * connection failures
+
+    // Precondition: MPD's error state isn't MPD_ERROR_SUCCESS
+    emit errorMessage(m_mpd.getErrorMessage());
+    
+    disconnectFromMPD();
+}
+
+void MPDConnectionManager::disconnectFromMPD()
+{
     mpd::Connection disconnected;
     m_mpd = std::move(disconnected);
     emit connectionState(MPDConnection::State::Disconnected);
-    setError(MPD_ERROR_SUCCESS);
-}
-
-
-void MPDConnectionManager::setError(int mpdError) {
-    if (m_mpdError == mpdError) {
-        return;
-    }
-
-    if (!m_mpd) {
-        return;
-    }
-
-    m_mpdError = mpdError;
-
-    if (m_mpdError == MPD_ERROR_SUCCESS) {
-        emit errorMessage("");
-    } else {
-        emit errorMessage(m_mpd.getErrorMessage());
-        mpd::Connection disconnected;
-        m_mpd = std::move(disconnected);
-        emit connectionState(MPDConnection::State::Disconnected);
-        m_mpdError = MPD_ERROR_SUCCESS;
-    }
 }
