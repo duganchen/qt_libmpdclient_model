@@ -1,5 +1,5 @@
 #include "mpdConnectionManager.h"
-#include <mpd/client.h>
+#include "mpdclient/connection.h"
 
 MPDConnectionManager::MPDConnectionManager(mpd::Connection &mpd, QObject *parent)
     : QObject(parent)

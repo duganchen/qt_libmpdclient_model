@@ -3,9 +3,14 @@
 
 #include <QObject>
 
-#include "mpdclient/connection.h"
 #include "mpd/client.h"
 #include "connectionstate.h"
+
+namespace mpd {
+class Connection;
+}
+
+class QSocketNotifier;
 
 class MPDConnectionManager: public QObject
 {
