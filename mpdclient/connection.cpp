@@ -61,6 +61,22 @@ mpd_idle mpd::Connection::recvIdle(bool disable_timeout) {
     return mpd_recv_idle(m_connection, disable_timeout);
 }
 
+std::unique_ptr<mpd::Status> mpd::Connection::runStatus() {
+    return std::make_unique<mpd::Status>(mpd_run_status(m_connection));
+}
+
+std::vector<std::pair<unsigned, unsigned>> mpd::Connection::runPlChangesPosId(unsigned version) {
+    std::vector<std::pair<unsigned, unsigned>> changes;
+    if (mpd_send_queue_changes_brief(m_connection, version)) {
+        unsigned position{};
+        unsigned id{};
+        while (mpd_recv_queue_change_brief(m_connection, &position, &id)) {
+            changes.push_back(std::make_pair(position, id));
+        }
+    }
+    return changes;
+}
+
 mpd::Connection::Connection(mpd::Connection &&other)
     : m_connection(other.m_connection)
 {
