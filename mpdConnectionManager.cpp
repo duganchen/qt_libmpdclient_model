@@ -48,3 +48,7 @@ void MPDConnectionManager::disconnectFromMPD()
     m_mpd = std::move(disconnected);
     emit connectionState(MPDConnection::State::Disconnected);
 }
+
+void MPDConnectionManager::disableNotifications() {}
+
+void MPDConnectionManager::enableNotifications() {}

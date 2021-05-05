@@ -24,8 +24,8 @@ public slots:
 signals:
     void mpdClosed();
     void errorMessage(const QString &);
-    void disableNotifications();
-    void enableNotifications();
+    void commandAboutToBeExecuted();
+    void commandExecuted();
 
 private:
     mpd::Connection &m_mpd;

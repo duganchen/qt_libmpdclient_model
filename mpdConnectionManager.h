@@ -19,6 +19,8 @@ public slots:
     void connectToMPD();
     void onMPDClosed();
     void disconnectFromMPD();
+    void disableNotifications();
+    void enableNotifications();
 signals:
     void errorMessage(const QString &);
     void connectionState(MPDConnection::State);
