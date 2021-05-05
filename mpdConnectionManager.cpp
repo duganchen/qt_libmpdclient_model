@@ -49,6 +49,16 @@ void MPDConnectionManager::disconnectFromMPD()
     emit connectionState(MPDConnection::State::Disconnected);
 }
 
-void MPDConnectionManager::disableNotifications() {}
+void MPDConnectionManager::disableNotifications()
+{
+    if (!m_mpd || !m_socketNotifier) {
+        return;
+    }
+}
 
-void MPDConnectionManager::enableNotifications() {}
+void MPDConnectionManager::enableNotifications()
+{
+    if (!m_mpd || !m_socketNotifier) {
+        return;
+    }
+}
