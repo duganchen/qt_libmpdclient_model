@@ -2,8 +2,7 @@
 
 mpd::Connection::Connection(mpd_connection *connection)
     : m_connection{connection}
-{
-}
+{}
 
 mpd::Connection::operator bool()
 {
@@ -49,24 +48,28 @@ std::vector<std::unique_ptr<mpd::Song>> mpd::Connection::list_queue_meta()
     // empty if there was a problem.
 }
 
-int mpd::Connection::get_fd() {
+int mpd::Connection::get_fd()
+{
     return mpd_connection_get_fd(m_connection);
 }
 
-bool mpd::Connection::send_idle() {
-
+bool mpd::Connection::send_idle()
+{
     return mpd_send_idle(m_connection);
 }
 
-mpd_idle mpd::Connection::recv_idle(bool disable_timeout) {
+mpd_idle mpd::Connection::recv_idle(bool disable_timeout)
+{
     return mpd_recv_idle(m_connection, disable_timeout);
 }
 
-std::unique_ptr<mpd::Status> mpd::Connection::status() {
+std::unique_ptr<mpd::Status> mpd::Connection::status()
+{
     return std::make_unique<mpd::Status>(mpd_run_status(m_connection));
 }
 
-std::vector<mpd::plchangeposid> mpd::Connection::plchangesposid(unsigned version) {
+std::vector<mpd::plchangeposid> mpd::Connection::plchangesposid(unsigned version)
+{
     std::vector<mpd::plchangeposid> changes;
     if (mpd_send_queue_changes_brief(m_connection, version)) {
         struct plchangeposid change;
@@ -78,8 +81,14 @@ std::vector<mpd::plchangeposid> mpd::Connection::plchangesposid(unsigned version
     return changes;
 }
 
-std::unique_ptr<mpd::Song> mpd::Connection::get_queue_song_id(unsigned id) {
+std::unique_ptr<mpd::Song> mpd::Connection::get_queue_song_id(unsigned id)
+{
     return std::make_unique<mpd::Song>(mpd_run_get_queue_song_id(m_connection, id));
+}
+
+mpd_idle mpd::Connection::noidle()
+{
+    return mpd_run_noidle(m_connection);
 }
 
 mpd::Connection::Connection(mpd::Connection &&other)
@@ -107,4 +116,3 @@ mpd::Connection::~Connection()
         mpd_connection_free(m_connection);
     }
 }
-

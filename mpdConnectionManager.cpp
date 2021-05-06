@@ -54,11 +54,47 @@ void MPDConnectionManager::disableNotifications()
     if (!m_mpd || !m_socketNotifier) {
         return;
     }
+
+    m_socketNotifier->setEnabled(false);
+
+    mpd_idle idle = m_mpd.noidle();
+
+    if (!idle) {
+        mpd_error error = m_mpd.get_error();
+        if (MPD_ERROR_CLOSED == error) {
+            onMPDClosed();
+        } else {
+            emit errorMessage(m_mpd.get_error_message());
+        }
+    }
+
+    handleIdle(idle);
 }
 
 void MPDConnectionManager::enableNotifications()
 {
     if (!m_mpd || !m_socketNotifier) {
         return;
+    }
+
+    m_socketNotifier->setEnabled(true);
+
+    if (!m_mpd.send_idle()) {
+        switch (m_mpd.get_error()) {
+        case MPD_ERROR_CLOSED:
+            onMPDClosed();
+            break;
+        case MPD_ERROR_SUCCESS:
+            break;
+        default:
+            emit errorMessage(m_mpd.get_error_message());
+        }
+    }
+}
+
+void MPDConnectionManager::handleIdle(mpd_idle idle)
+{
+    if (idle & MPD_IDLE_QUEUE) {
+        emit idleQueue();
     }
 }

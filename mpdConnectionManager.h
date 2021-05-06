@@ -30,6 +30,8 @@ private:
     mpd::Connection &m_mpd;
     int m_mpdError{MPD_ERROR_SUCCESS};
     QSocketNotifier *m_socketNotifier{};
+
+    void handleIdle(mpd_idle);
 };
 
 #endif
