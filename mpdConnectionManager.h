@@ -32,6 +32,7 @@ private:
     QSocketNotifier *m_socketNotifier{};
 
     void handleIdle(mpd_idle);
+    void handleError(mpd_error);
 };
 
 #endif

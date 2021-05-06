@@ -60,12 +60,7 @@ void MPDConnectionManager::disableNotifications()
     mpd_idle idle = m_mpd.noidle();
 
     if (!idle) {
-        mpd_error error = m_mpd.get_error();
-        if (MPD_ERROR_CLOSED == error) {
-            onMPDClosed();
-        } else {
-            emit errorMessage(m_mpd.get_error_message());
-        }
+        handleError(m_mpd.get_error());
     }
 
     handleIdle(idle);
@@ -80,15 +75,7 @@ void MPDConnectionManager::enableNotifications()
     m_socketNotifier->setEnabled(true);
 
     if (!m_mpd.send_idle()) {
-        switch (m_mpd.get_error()) {
-        case MPD_ERROR_CLOSED:
-            onMPDClosed();
-            break;
-        case MPD_ERROR_SUCCESS:
-            break;
-        default:
-            emit errorMessage(m_mpd.get_error_message());
-        }
+        handleError(m_mpd.get_error());
     }
 }
 
@@ -97,4 +84,20 @@ void MPDConnectionManager::handleIdle(mpd_idle idle)
     if (idle & MPD_IDLE_QUEUE) {
         emit idleQueue();
     }
+}
+
+void MPDConnectionManager::handleError(mpd_error error)
+{
+    if (!m_mpd) {
+        return;
+    }
+    switch (error) {
+    case MPD_ERROR_CLOSED:
+        onMPDClosed();
+        break;
+    case MPD_ERROR_SUCCESS:
+        break;
+    default:
+        emit errorMessage(m_mpd.get_error_message());
+    };
 }
