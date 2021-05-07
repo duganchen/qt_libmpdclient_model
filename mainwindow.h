@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include "connectionstate.h"
+#include <QMainWindow>
 
 class QAbstractItemModel;
 class QLabel;
@@ -10,7 +10,7 @@ class QProgressBar;
 class QPushButton;
 class QueueModel;
 
-class MainWindow: public QMainWindow
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
@@ -21,10 +21,10 @@ public slots:
 signals:
     void connectClicked();
     void disconnectClicked();
+
 private:
     QProgressBar *m_progressBar{};
     QPushButton *m_connectButton{};
-    QPushButton *m_refreshButton{};
     QLabel *m_statusLabel{};
     MPDConnection::State m_connectionState{MPDConnection::State::Disconnected};
 };

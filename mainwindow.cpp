@@ -8,29 +8,26 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-MainWindow::MainWindow(QueueModel *model, QWidget *parent, Qt::WindowFlags windowFlags): QMainWindow(parent, windowFlags)
+MainWindow::MainWindow(QueueModel *model, QWidget *parent, Qt::WindowFlags windowFlags)
+    : QMainWindow(parent, windowFlags)
 {
     auto layout = new QVBoxLayout();
     m_connectButton = new QPushButton("&Connect to MPD");
     connect(m_connectButton, &QPushButton::clicked, [=]() {
         switch (m_connectionState) {
-            case MPDConnection::State::Disconnected:
-                emit connectClicked();
-                break;
-            case MPDConnection::State::Connected:
-                emit disconnectClicked();
-                break;
-            default:
-                break;
-            }
+        case MPDConnection::State::Disconnected:
+            emit connectClicked();
+            break;
+        case MPDConnection::State::Connected:
+            emit disconnectClicked();
+            break;
+        default:
+            break;
+        }
     });
     layout->addWidget(m_connectButton);
     m_progressBar = new QProgressBar();
     layout->addWidget(m_progressBar);
-    m_refreshButton = new QPushButton("&Refresh MPD Queue");
-    m_refreshButton->setEnabled(false);
-    connect(m_refreshButton, &QPushButton::clicked, model, &QueueModel::refresh);
-    layout->addWidget(m_refreshButton);
     auto view = new QListView();
     view->setModel(model);
     layout->addWidget(view);
@@ -56,23 +53,20 @@ void MainWindow::setConnectionState(MPDConnection::State state)
     m_connectionState = state;
 
     switch (m_connectionState) {
-        case MPDConnection::State::Disconnected:
-            m_connectButton->setText("&Connect to MPD");
-            m_refreshButton->setEnabled(false);
-            m_progressBar->setMinimum(0);
-            m_progressBar->setMaximum(1);
-            break;
-        case MPDConnection::State::Connecting:
-            m_connectButton->setText("&Connect to MPD");
-            m_refreshButton->setEnabled(false);
-            m_progressBar->setMinimum(0);
-            m_progressBar->setMaximum(0);
-            break;
-        case MPDConnection::State::Connected:
-            m_connectButton->setText("Dis&connect from MPD");
-            m_refreshButton->setEnabled(true);
-            m_progressBar->setMinimum(0);
-            m_progressBar->setMaximum(1);
-            break;
-       };
+    case MPDConnection::State::Disconnected:
+        m_connectButton->setText("&Connect to MPD");
+        m_progressBar->setMinimum(0);
+        m_progressBar->setMaximum(1);
+        break;
+    case MPDConnection::State::Connecting:
+        m_connectButton->setText("&Connect to MPD");
+        m_progressBar->setMinimum(0);
+        m_progressBar->setMaximum(0);
+        break;
+    case MPDConnection::State::Connected:
+        m_connectButton->setText("Dis&connect from MPD");
+        m_progressBar->setMinimum(0);
+        m_progressBar->setMaximum(1);
+        break;
+    };
 };
