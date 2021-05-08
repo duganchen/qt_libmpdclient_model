@@ -28,9 +28,8 @@ class TestQueueModel : public QObject
 {
     Q_OBJECT
 private slots:
-    void queueModelTest()
+    void refreshAndDataTest()
     {
-        std::cout << "aaaaa\n";
         std::unique_ptr<MockSong> song(new MockSong());
         EXPECT_CALL(*song, get_tag(MPD_TAG_TITLE, 0)).WillOnce(Return("Song title"));
         std::vector<std::unique_ptr<mpd::Song>> songs;
