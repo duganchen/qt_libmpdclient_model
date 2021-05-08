@@ -1,5 +1,6 @@
 #include "mpdclient/connection.h"
 #include "queuemodel.h"
+#include "gmock/gmock.h"
 #include <QObject>
 #include <QTest>
 

@@ -10,6 +10,7 @@ FetchContent_MakeAvailable(googletest)
 
 target_include_directories(queueModelTest PRIVATE
     Qt5::Test
+    "${googletest_SOURCE_DIR}/googletest/include"
     "${googletest_SOURCE_DIR}/googlemock/include"
     ${PROJECT_SOURCE_DIR}
 )
