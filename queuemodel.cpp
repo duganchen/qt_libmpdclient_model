@@ -71,10 +71,6 @@ void QueueModel::onIdleQueue()
         return;
     }
 
-    if (m_queueVersion == UINT_MAX) {
-        return;
-    }
-
     auto status = m_mpd.status();
     switch (m_mpd.get_error()) {
     case MPD_ERROR_SUCCESS:

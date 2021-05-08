@@ -25,8 +25,6 @@ public slots:
 signals:
     void mpdClosed();
     void errorMessage(const QString &);
-    void commandAboutToBeExecuted();
-    void commandExecuted();
 
 private:
     mpd::Connection &m_mpd;

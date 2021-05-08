@@ -38,14 +38,6 @@ int main(int argc, char *argv[])
                      &MPDConnectionManager::disconnectFromMPD);
     QObject::connect(&window, &MainWindow::disconnectClicked, &model, &QueueModel::clear);
     QObject::connect(&model, &QueueModel::errorMessage, &window, &MainWindow::setErrorMessage);
-    QObject::connect(&model,
-                     &QueueModel::commandAboutToBeExecuted,
-                     &mpdConnectionManager,
-                     &MPDConnectionManager::disableNotifications);
-    QObject::connect(&model,
-                     &QueueModel::commandExecuted,
-                     &mpdConnectionManager,
-                     &MPDConnectionManager::enableNotifications);
     QObject::connect(&mpdConnectionManager,
                      &MPDConnectionManager::connectionState,
                      &model,
