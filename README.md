@@ -117,5 +117,8 @@ Due to the way C++ references work, this solves the architectural issue of how t
 connection is gained or lost. If multiple objects hold a reference to the same mpd::Connection, then an assignment
 operation in one class will update it for all of them.
 
+Factory methods return unique_ptrs, or containers full of them. That gives you both polymorphism (which you need for
+the mocks to work) and memory safety.
+
 At this point, it's obvious how to set up a QueueModel unit test. We inject a mock mpd::Connection object, and we
 manipulate its API, calling its *index* method when appropriate.
