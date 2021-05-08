@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.11)
 project(quetzalcoatl LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -16,3 +16,6 @@ add_subdirectory(mpdclient)
 
 add_executable(queueview queuemodel.cpp main.cpp mpdConnectionManager.cpp mainwindow.cpp)
 target_link_libraries(queueview PRIVATE Qt5::Widgets Qt5::Core mpdclient PkgConfig::LIBMPDCLIENT)
+
+enable_testing()
+add_subdirectory(tests)
