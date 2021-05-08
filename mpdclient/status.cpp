@@ -1,24 +1,23 @@
-#include "status.h"
+#include "mpdclient/status.h"
 
 mpd::Status::Status(mpd_status *status)
     : m_status{status}
-{
-}
+{}
 
 mpd::Status::operator bool()
 {
     return bool(m_status);
 }
 
-unsigned mpd::Status::get_queue_version() {
+unsigned mpd::Status::get_queue_version()
+{
     return mpd_status_get_queue_version(m_status);
 }
 
-unsigned mpd::Status::get_queue_length() {
+unsigned mpd::Status::get_queue_length()
+{
     return mpd_status_get_queue_length(m_status);
 }
-
-
 
 mpd::Status::Status(mpd::Status &&other)
     : m_status(other.m_status)

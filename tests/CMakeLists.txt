@@ -13,5 +13,6 @@ target_include_directories(queueModelTest PRIVATE
     "${googletest_SOURCE_DIR}/googletest/include"
     "${googletest_SOURCE_DIR}/googlemock/include"
     ${PROJECT_SOURCE_DIR}
+    ${PROJECT_SOURCE_DIR}/mpdclient/include
 )
 target_link_libraries(queueModelTest PRIVATE Qt5::Core Qt5::Test)

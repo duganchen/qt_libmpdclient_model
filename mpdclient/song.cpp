@@ -1,4 +1,4 @@
-#include "song.h"
+#include "mpdclient/song.h"
 
 const char *mpd::Song::get_tag(mpd_tag_type type, unsigned idx)
 {

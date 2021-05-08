@@ -1,4 +1,4 @@
-#include "connection.h"
+#include "mpdclient/connection.h"
 
 mpd::Connection::Connection(mpd_connection *connection)
     : m_connection{connection}

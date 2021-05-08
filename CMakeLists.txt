@@ -15,6 +15,7 @@ pkg_check_modules(LIBMPDCLIENT REQUIRED IMPORTED_TARGET libmpdclient)
 add_subdirectory(mpdclient)
 
 add_executable(queueview queuemodel.cpp main.cpp mpdConnectionManager.cpp mainwindow.cpp)
+target_include_directories(queueview PRIVATE ${PROJECT_SOURCE_DIR}/mpdclient/include)
 target_link_libraries(queueview PRIVATE Qt5::Widgets Qt5::Core mpdclient PkgConfig::LIBMPDCLIENT)
 
 enable_testing()
