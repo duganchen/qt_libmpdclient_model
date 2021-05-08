@@ -1,3 +1,4 @@
+#include "mpdclient/connection.h"
 #include "queuemodel.h"
 #include <QObject>
 #include <QTest>
