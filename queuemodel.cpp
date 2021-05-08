@@ -136,3 +136,23 @@ void QueueModel::onIdleQueue()
         }
     }
 }
+
+void QueueModel::onConnectionState(MPDConnection::State connectionState)
+{
+    if (connectionState == m_connectionState) {
+        return;
+    }
+
+    m_connectionState = connectionState;
+
+    switch (m_connectionState) {
+    case MPDConnection::State::Disconnected:
+        clear();
+        break;
+    case MPDConnection::State::Connected:
+        refresh();
+        break;
+    default:
+        break;
+    }
+}

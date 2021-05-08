@@ -46,6 +46,10 @@ int main(int argc, char *argv[])
                      &QueueModel::commandExecuted,
                      &mpdConnectionManager,
                      &MPDConnectionManager::enableNotifications);
+    QObject::connect(&mpdConnectionManager,
+                     &MPDConnectionManager::connectionState,
+                     &model,
+                     &QueueModel::onConnectionState);
     window.show();
     return app.exec();
 }
